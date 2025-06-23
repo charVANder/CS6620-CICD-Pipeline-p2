@@ -8,4 +8,4 @@ echo "API will be available at http://localhost:5000"
 echo "Press Ctrl+C to stop the server"
 
 # Runs until manually stopped)
-docker run --rm -p 5000:5000 --name pokemon-api-container pokemon-api
+docker run --rm -p 5001:5000 --name pokemon-api-container pokemon-api
