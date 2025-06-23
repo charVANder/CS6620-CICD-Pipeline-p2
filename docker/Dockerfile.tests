@@ -1,0 +1,11 @@
+FROM python:3.10
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY src/ ./src/
+COPY tests/ ./tests/
+COPY app.py .
+ENV PYTHONPATH=/app/src
+
+# Run API tests and exit w/ status code
+CMD ["pytest", "tests/test_api.py", "-v"]

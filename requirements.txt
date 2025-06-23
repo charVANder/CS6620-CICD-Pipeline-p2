@@ -1,2 +1,3 @@
-# Only thing needed for this assignment is pytest
+Flask
+requests
 pytest

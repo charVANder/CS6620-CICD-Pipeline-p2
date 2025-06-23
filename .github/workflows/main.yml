@@ -1,4 +1,4 @@
-name: CI/CD Pipeline Part 1 (Pokemon Tests)
+name: CI/CD Pipeline Part 2 (Pokemon Tests)
 
 on:
   push:
@@ -26,6 +26,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run Tests
-      run:
-        PYTHONPATH=src pytest tests/
+    - name: Run Original Pokemon Tests
+      run: |
+        PYTHONPATH=src pytest tests/test_pokemon.py -v
+
+    - name: Run REST API Tests
+      run: |
+        PYTHONPATH=src pytest tests/test_api.py -v
+
+    - name: Build Docker Images
+      run: |
+        docker build -f docker/Dockerfile.api -t pokemon-api .
+        docker build -f docker/Dockerfile.tests -t pokemon-api-tests .
+
+    - name: Test Docker Test Container
+      run: |
+        docker run --rm pokemon-api-tests
