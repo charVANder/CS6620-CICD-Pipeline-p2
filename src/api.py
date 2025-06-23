@@ -28,7 +28,7 @@ def create_app():
         
         if not isinstance(data["level"], int) or data["level"] < 1 or data["level"] > 100:
             return False, f"Level needs to be b/w 1 and 100"
-        return True
+        return True, ""
             
     def convert_to_dict(pokemon, pokemon_id):
         '''Will convert original pkmn to dict for JSON
