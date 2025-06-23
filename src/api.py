@@ -28,6 +28,7 @@ def create_app():
         
         if not isinstance(data["level"], int) or data["level"] < 1 or data["level"] > 100:
             return False, f"Level needs to be b/w 1 and 100"
+        return True
             
     def convert_to_dict(pokemon, pokemon_id):
         '''Will convert original pkmn to dict for JSON
@@ -39,7 +40,7 @@ def create_app():
             "max_hp": pokemon.max_hp,
             "fainted": pokemon.fainted,
             "level": getattr(pokemon, 'level', 1), # default if not set
-            "type": getattr(pokemon, 'type', 'Null') # default if not set
+            "type": getattr(pokemon, 'type', 'Normal') # default if not set
         }
 
     ## Routes
@@ -109,7 +110,7 @@ def create_app():
         pokemon.name = data["name"].strip()
         pokemon.level = data["level"]
         if "type" in data:
-            pokemon["type"] = data["type"]
+            pokemon.type = data["type"]
 
         return jsonify(convert_to_dict(pokemon, pokemon_id)), 200
     
@@ -153,7 +154,7 @@ def create_app():
             return jsonify({"Error": f"Request must be JSON"}), 400
         data = request.get_json()
         if "amount" not in data:
-            return jsonify({"Error": f"Missing 'amount'"})
+            return jsonify({"Error": f"Missing 'amount'"}), 400
         if not isinstance(data["amount"], int) or data["amount"] < 0:
             return jsonify({"Error": f"Damage must be a non-negative integer"}), 400
         
@@ -175,12 +176,12 @@ def create_app():
         if pokemon is None:
             return jsonify({"Error": f"Pokemon with ID {pokemon_id} was not found"}), 404
         if pokemon.fainted:
-            return jsonify({"Error": f"{pokemon.name} has fainted and cannot attack"}), 400
+            return jsonify({"Error": f"{pokemon.name} has fainted and cannot be healed"}), 400
         if not request.is_json:
             return jsonify({"Error": f"Request must be JSON"}), 400
         data = request.get_json()
         if "amount" not in data:
-            return jsonify({"Error": f"Missing 'amount'"})
+            return jsonify({"Error": f"Missing 'amount'"}), 400
         if not isinstance(data["amount"], int) or data["amount"] < 0:
             return jsonify({"Error": f"Heal amount must be a non-negative integer"}), 400
         
@@ -189,7 +190,7 @@ def create_app():
         healing = pokemon.hp - old_hp
 
         return jsonify({
-            "Note": f"{pokemon.name} was was healed to {healing} HP",
+            "Note": f"{pokemon.name} was healed for {healing} HP",
             "pokemon": convert_to_dict(pokemon, pokemon_id)
         }), 200
     

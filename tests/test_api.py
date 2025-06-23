@@ -96,7 +96,7 @@ def test_update_pokemon(client):
     }
     created_response = client.post('/pokemon', data=json.dumps(created_pkmn))
     assert created_response.status_code == 201
-    pokemon_id = json.loads(created_response.data["id"])
+    pokemon_id = json.loads(created_response.data)["id"]
 
     updated_data = {
         "name": "Eevee UPDATED",
@@ -139,7 +139,7 @@ def test_delete_pokemon(client):
     assert get_response.status_code == 404
 
 def test_delete_nonexisting_pokemon(client):
-    response = client.delete(f"pokemon/123456789")
+    response = client.delete(f"/pokemon/123456789")
     assert response.status_code == 404
     data = json.loads(response.data)
     assert "Error" in data
@@ -158,7 +158,7 @@ def test_pokemon_attack(client):
     response = client.post(f'/pokemon/{pokemon_id}/attack', data=json.dumps(attack_data))
     assert response.status_code == 200
     data = json.loads(response.data)
-    assert "Thunderbolt" in data["message"]
+    assert "Thunderbolt" in data["Note"]
     assert "pokemon" in data
 
 def test_pokemon_take_damage(client):
