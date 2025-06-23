@@ -23,7 +23,7 @@ chmod +x scripts/run_api.sh
 ./scripts/run_api.sh
 # press Ctrl+C to stop manually
 ```
-The API will be available at http://localhost:5001 (I used port 5001 to avoid personal conflicts with other services using port 5000). Press `Ctrl+C` to stop the server.
+The API will be available at http://localhost:5001 (Dockerfiles/scripts used port 5000, but I used port 5001 on my personal laptop to avoid personal conflicts with other services). Press `Ctrl+C` to stop the server.
 
 If you go to http://localhost:5001/health, then you should see something like:
 ```
