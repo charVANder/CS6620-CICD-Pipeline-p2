@@ -5,6 +5,7 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from src.api import create_app
+
 @pytest.fixture()
 def app():
     app = create_app()
@@ -58,7 +59,7 @@ def test_create_pokemon(client):
         "level": 10,
         "type": "Water"
     }
-    response = client.post('/pokemon', data=json.dumps(new_pkmn))
+    response = client.post('/pokemon', data=json.dumps(new_pkmn), content_type='application/json')
     assert response.status_code == 201
     data = json.loads(response.data)
     assert "id" in data
@@ -68,14 +69,14 @@ def test_create_pokemon(client):
 
 def test_create_pokemon_missing_data(client):
     pkmn_missing_data = {"level": 3}
-    response = client.post('/pokemon', data=json.dumps(pkmn_missing_data))
+    response = client.post('/pokemon', data=json.dumps(pkmn_missing_data), content_type='application/json')
     assert response.status_code == 400
     data = json.loads(response.data)
     assert "Error" in data
 
 def test_create_pokemon_invalid_data(client):
     invalid_pkmn = {"name": "INVALID", "level": 1000} # 1000 is too high
-    response = client.post('/pokemon', data=json.dumps(invalid_pkmn))
+    response = client.post('/pokemon', data=json.dumps(invalid_pkmn), content_type='application/json')
     assert response.status_code == 400
     data = json.loads(response.data)
     assert "Error" in data
@@ -94,7 +95,7 @@ def test_update_pokemon(client):
         "level": 25,
         "type": "Normal"
     }
-    created_response = client.post('/pokemon', data=json.dumps(created_pkmn))
+    created_response = client.post('/pokemon', data=json.dumps(created_pkmn), content_type='application/json')
     assert created_response.status_code == 201
     pokemon_id = json.loads(created_response.data)["id"]
 
@@ -102,7 +103,7 @@ def test_update_pokemon(client):
         "name": "Eevee UPDATED",
         "level": 30
     }
-    response = client.put(f'/pokemon/{pokemon_id}', data=json.dumps(updated_data))
+    response = client.put(f'/pokemon/{pokemon_id}', data=json.dumps(updated_data), content_type='application/json')
     assert response.status_code == 200
     data = json.loads(response.data)
     assert data["name"] == "Eevee UPDATED"
@@ -113,7 +114,7 @@ def test_update_nonexisting_pokemon(client):
         "name": "MISSINGNO",
         "level": 1
     }
-    response = client.put(f'/pokemon/123456789', data=json.dumps(updated_data))
+    response = client.put(f'/pokemon/123456789', data=json.dumps(updated_data), content_type='application/json')
     assert response.status_code == 404
     data = json.loads(response.data)
     assert "Error" in data
@@ -125,7 +126,7 @@ def test_delete_pokemon(client):
         "name": "Venasaur",
         "level": 36
     }
-    created_response = client.post('/pokemon', data=json.dumps(created_pkmn))
+    created_response = client.post('/pokemon', data=json.dumps(created_pkmn), content_type='application/json')
     assert created_response.status_code == 201
     pokemon_id = json.loads(created_response.data)["id"]
 
@@ -155,7 +156,7 @@ def test_pokemon_attack(client):
     pokemon_id = pokemon_list[0]["id"] # I think this is Pikachu
     
     attack_data = {"attack_name": "Thunderbolt", "damage": 75}
-    response = client.post(f'/pokemon/{pokemon_id}/attack', data=json.dumps(attack_data))
+    response = client.post(f'/pokemon/{pokemon_id}/attack', data=json.dumps(attack_data), content_type='application/json')
     assert response.status_code == 200
     data = json.loads(response.data)
     assert "Thunderbolt" in data["Note"]
@@ -163,12 +164,12 @@ def test_pokemon_attack(client):
 
 def test_pokemon_take_damage(client):
     created_data = {"name": "DamageTest", "level": 10}
-    created_response = client.post('/pokemon', data=json.dumps(created_data))
+    created_response = client.post('/pokemon', data=json.dumps(created_data), content_type='application/json')
     pokemon_id = json.loads(created_response.data)["id"]
     original_hp = json.loads(created_response.data)["hp"]
     
     damage_data = {"amount": 25}
-    response = client.post(f'/pokemon/{pokemon_id}/damage', data=json.dumps(damage_data))
+    response = client.post(f'/pokemon/{pokemon_id}/damage', data=json.dumps(damage_data), content_type='application/json')
     assert response.status_code == 200
     data = json.loads(response.data)
     assert data["pokemon"]["hp"] < original_hp
@@ -176,14 +177,14 @@ def test_pokemon_take_damage(client):
 
 def test_pokemon_heal(client):
     created_data = {"name": "HealTest", "level": 10}
-    created_response = client.post('/pokemon', data=json.dumps(created_data))
+    created_response = client.post('/pokemon', data=json.dumps(created_data), content_type='application/json')
     pokemon_id = json.loads(created_response.data)["id"]
     
     damage_data = {"amount": 30}
-    client.post(f'/pokemon/{pokemon_id}/damage', data=json.dumps(damage_data))
+    client.post(f'/pokemon/{pokemon_id}/damage', data=json.dumps(damage_data), content_type='application/json')
     
     heal_data = {"amount": 15}
-    response = client.post(f'/pokemon/{pokemon_id}/heal', data=json.dumps(heal_data))
+    response = client.post(f'/pokemon/{pokemon_id}/heal', data=json.dumps(heal_data), content_type='application/json')
     assert response.status_code == 200
     data = json.loads(response.data)
     assert "healed" in data["Note"]
