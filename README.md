@@ -3,7 +3,7 @@ This is a HW assignment for CS6620 (Cloud Computing) at the Roux Institute at No
 
 Shown below is an image of a few workflow runs (on push and upon manual triggering) as proof that the workflow is running correctly:
 <p float="left", align="center">
-  <img src="figs/workflow_runs.png" width="500"/>
+  <img src="figs/workflow_runs.png" width="550"/>
 </p>
 
 ...And here is a table of all the newly created API endpoints and status codes:
@@ -13,7 +13,7 @@ Shown below is an image of a few workflow runs (on push and upon manual triggeri
 
 ...And here is an image of both Dockerfile builds on Docker Desktop
 <p float="left", align="center">
-  <img src="figs/docker_desktop.png" width="500"/>
+  <img src="figs/docker_desktop.png" width="575"/>
 </p>
 
 ## Running the API
@@ -32,7 +32,7 @@ If you go to http://localhost:5001/health, then you should see something like:
 
 Shown below is an image of the API running successfully:
 <p float="left", align="center">
-  <img src="figs/run_api.png" width="500"/>
+  <img src="figs/run_api.png" width="600"/>
 </p>
 
 ## Running the Tests
@@ -45,7 +45,7 @@ It exits with 0 if tests pass, and non-zero (1) if tests fail.
 
 Shown below is an image of this working successfully:
 <p float="left", align="center">
-  <img src="figs/run_tests.png" width="500"/>
+  <img src="figs/run_tests.png" width="600"/>
 </p>
 
 ## Extra Testing
