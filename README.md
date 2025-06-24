@@ -90,8 +90,10 @@ python app.py # API at http://localhost:5000
 PYTHONPATH=src pytest tests/ -v # run tests
 ```
 
-## References
+## References and AI Appendix
 * HTTP response codes - https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
 * RESTful API testing - https://laerciosantanna.medium.com/mastering-restful-api-testing-with-pytest-56d22460a9c4
 * Testing Flask apps - https://flask.palletsprojects.com/en/stable/testing/
 * Running flask server under pytest - https://stackoverflow.com/questions/77676757/run-a-full-flask-server-under-pytest-to-handle-http-requests-on-a-given-port
+* Asking Claude to fix a Docker Desktop (it was frozen) - https://claude.ai/share/f43454f6-87f2-40e7-a9ab-d0deeff13b6b
+* Asking Claude for a REST APIs rundown - https://claude.ai/share/139d2226-5769-408b-bfa9-b8fd4e98b7de
